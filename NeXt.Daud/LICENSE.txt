@@ -1,6 +1,6 @@
-Copyright (c) Mirco Gericke 2015
+Copyright (c) Mirco Gericke 2017
 
-This file is part of NeXt.Vdf.
+This file is part of NeXt.Daud.
 
 NeXt.Vdf is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
