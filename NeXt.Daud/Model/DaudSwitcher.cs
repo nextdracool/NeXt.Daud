@@ -11,16 +11,16 @@ namespace NeXt.Daud.Model
     public abstract class DaudSwitcher
     {
         private const string DishonoredId = "205100";
-        private const string DishonoredUpk = "DishonoredGameFull_P.upk";
+        protected const string DishonoredUpk = "DishonoredGameFull_P.upk";
         protected abstract string DishonoredUI { get; }
 
 
         protected abstract string DlcUpk { get; }
         protected abstract string DishonoredStartNormal { get; }
 
-        private string DishonoredStartDaud => $"start {Path.GetFileNameWithoutExtension(DlcUpk)}";
+        protected string DishonoredStartDaud => $"start {Path.GetFileNameWithoutExtension(DlcUpk)}";
         
-        public void Enable()
+        public virtual void Enable()
         {
             //backup all affected files
             File.Copy(Path.Combine(CookedPcConsole, DishonoredUpk), Path.Combine(LocalPath, DishonoredUpk), true);
@@ -36,7 +36,7 @@ namespace NeXt.Daud.Model
             File.WriteAllText(Path.Combine(DishonoredUIPath, DishonoredUI), ini);
         }
 
-        public void Disable()
+        public virtual void Disable()
         {
             //delete the new upk
             File.Delete(Path.Combine(CookedPcConsole, DlcUpk));
@@ -47,9 +47,9 @@ namespace NeXt.Daud.Model
             File.WriteAllText(Path.Combine(DishonoredUIPath, DishonoredUI), ini);
         }
 
-        private string DishonoredUIPath => Path.Combine(Locator.Instance[DishonoredId], "DishonoredGame", "DLC", "PCConsole");
-        private string CookedPcConsole => Path.Combine(Locator.Instance[DishonoredId], "DishonoredGame", "CookedPCConsole");
-        private string LocalPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        protected string DishonoredUIPath => Path.Combine(Locator.Instance[DishonoredId], "DishonoredGame", "DLC", "PCConsole");
+        protected string CookedPcConsole => Path.Combine(Locator.Instance[DishonoredId], "DishonoredGame", "CookedPCConsole");
+        protected string LocalPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
     }
 
     public class KnifeOfDunwallSwitcher : DaudSwitcher
@@ -64,5 +64,25 @@ namespace NeXt.Daud.Model
         protected override string DishonoredUI => "DLC07\\DishonoredUI.ini";
         protected override string DlcUpk => "L_DLC07_Dishonored1_P.upk";
         protected override string DishonoredStartNormal => "start L_DLC07_GameFull_P";
+        private const string DlcUp = "DLC07\\L_DLC07_GameFull_P.upk";
+
+
+        public override void Enable()
+        {
+            //backup all affected files
+            File.Copy(Path.Combine(CookedPcConsole, DishonoredUpk), Path.Combine(LocalPath, DishonoredUpk), true);
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(LocalPath, DlcUp)));
+            File.Copy(Path.Combine(DishonoredUIPath, DlcUp), Path.Combine(LocalPath, DlcUp), true);
+
+            //exchange file
+            File.Delete(Path.Combine(DishonoredUIPath, DlcUp));
+            File.Copy(Path.Combine(CookedPcConsole, DishonoredUpk), Path.Combine(DishonoredUIPath, DlcUp));
+        }
+
+        public override void Disable()
+        {
+            File.Delete(Path.Combine(DishonoredUIPath, DlcUp));
+            File.Copy(Path.Combine(LocalPath, DlcUp), Path.Combine(DishonoredUIPath, DlcUp));
+        }
     }
 }
