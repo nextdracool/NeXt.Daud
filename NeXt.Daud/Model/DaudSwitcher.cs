@@ -24,7 +24,7 @@ namespace NeXt.Daud.Model
         {
             //backup all affected files
             File.Copy(Path.Combine(CookedPcConsole, DishonoredUpk), Path.Combine(LocalPath, DishonoredUpk), true);
-            Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(LocalPath, DishonoredUpk)));
+            Directory.CreateDirectory(Path.GetDirectoryName(Path.Combine(LocalPath, DishonoredUI)));
             File.Copy(Path.Combine(DishonoredUIPath, DishonoredUI), Path.Combine(LocalPath, DishonoredUI), true);
 
             //create the new upk
