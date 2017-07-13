@@ -1,0 +1,24 @@
+﻿<Window x:Class="NeXt.Daud.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeXt.Daud"
+        mc:Ignorable="d"
+        Title="Daud% Switcher" Height="350" Width="525">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Row="0" Grid.Column="0" Margin="2" Click="Daud_KoDOn" Content="Knife of Dunwall On"/>
+        <Button Grid.Row="0" Grid.Column="1" Margin="2" Click="Daud_BWOn" Content="Brigmore Witchers On"/>
+        <Button Grid.Row="1" Grid.Column="0" Margin="2" Click="DaudKoDOff" Content="Knife of Dunwall Off"/>
+        <Button Grid.Row="1" Grid.Column="1" Margin="2" Click="DaudBWOff" Content="Brigmore Witchers Off"/>
+    </Grid>
+</Window>
