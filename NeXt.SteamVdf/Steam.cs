@@ -6,16 +6,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 
-namespace NeXt.Daud.Model
+namespace NeXt.SteamVdf
 {
-    public class Locator
+    public class Steam
     {
-        private static readonly Lazy<Locator> instance = new Lazy<Locator>(() => new Locator(), false);
-        public static Locator Instance => instance.Value;
+        private static Lazy<Steam> instance = new Lazy<Steam>(() => new Steam(), false);
+        public static Steam Instance => instance.Value;
 
-        private Locator()
+        private Steam()
         {
             //the steam install folder
             steam_folder = new Lazy<string>(delegate
@@ -30,7 +29,7 @@ namespace NeXt.Daud.Model
             steamapps_list = new Lazy<IReadOnlyList<string>>(delegate
             {
                 var list = new List<string>();
-                var defaultApps = Path.Combine(SteamFolder, "SteamApps");
+                var defaultApps = Path.Combine(Folder, "SteamApps");
                 list.Add(defaultApps);
 
                 var desr = VdfDeserializer.FromFile(Path.Combine(defaultApps, "libraryfolders.vdf"));
@@ -47,24 +46,10 @@ namespace NeXt.Daud.Model
                 return list.AsReadOnly();
             },isThreadSafe: true);
 
-            
-            users = new Lazy<IReadOnlyList<SteamUser>>(()  => new List<SteamUser>(GetUserList()).AsReadOnly(), isThreadSafe: true);
+            Config = new SteamConfiguration(this);
         }
 
 
-        private IEnumerable<SteamUser> GetUserList()
-        {
-            var cfgdir = Path.Combine(SteamFolder, "config");
-            var ulist = VdfDeserializer.FromFile(Path.Combine(cfgdir, "loginusers.vdf")).Deserialize() as VdfTable;
-
-            foreach (var item in ulist)
-            {
-                var uid = item.Name;
-                var uname = ((VdfString)((VdfTable)item)["PersonaName"]).Content;
-                
-                yield return new SteamUser(uname, ulong.Parse(uid));
-            }
-        }
 
         private readonly Lazy<string> steam_folder;
         private readonly Lazy<IReadOnlyList<string>> steamapps_list;        
@@ -91,11 +76,11 @@ namespace NeXt.Daud.Model
             return null;
         }
 
-        public string SteamFolder => steam_folder.Value;
+        public string Folder => steam_folder.Value;
         public IEnumerable<string> SteamAppsFolders => steamapps_list.Value;
         public string this[string gameid] => GetInstallPath(gameid);
 
-        private Lazy<IReadOnlyList<SteamUser>> users;
-        public IReadOnlyList<SteamUser> Users => users.Value;
+        public SteamConfiguration Config { get; }
+
     }
 }

@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="NeXt.Daud.Views.ProfileManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NeXt.Daud.Views"
+             xmlns:model="clr-namespace:NeXt.Daud.Model"
+             xmlns:cal="http://www.caliburnproject.org"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+
+        <ListView DisplayMemberPath="Name" x:Name="Config_Profiles" cal:Message.Attach="[MouseDoubleClick]=[Action EditProfile($this)] ; [SelectionChanged]=[Action ViewProfile($this)]" />
+
+        <Grid Grid.Row="1" Grid.Column="0" Margin="2">
+            <Button x:Name="DeleteProfile" Width="110" Content="Delete" HorizontalAlignment="Right"/>
+            <Button x:Name="AddProfile" Width="110" Content="Add" HorizontalAlignment="Left"/>
+        </Grid>
+        
+        <ContentControl Grid.Row="0" Grid.Column="1" x:Name="ActiveProfile"/>
+
+        <Grid Grid.Column="1" Grid.Row="1" x:Name="EditButtonsVisible" Margin="2">
+            <Button x:Name="CancelEdit" Width="110" Content="Cancel" HorizontalAlignment="Left"/>
+            <Button x:Name="SaveEdit" Width="110" Content="Save" HorizontalAlignment="Right"/>
+        </Grid>
+            
+    </Grid>
+</UserControl>
